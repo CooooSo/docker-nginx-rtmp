@@ -2,7 +2,6 @@ ARG NGINX_VERSION=1.16.1
 ARG NGINX_RTMP_VERSION=1.2.1
 ARG FFMPEG_VERSION=4.2.1
 
-
 ##############################
 # Build the NGINX-build image.
 FROM alpine:3.8 as build-nginx
@@ -144,6 +143,9 @@ RUN apk add --update \
 COPY --from=build-nginx /usr/local/nginx /usr/local/nginx
 COPY --from=build-ffmpeg /usr/local /usr/local
 COPY --from=build-ffmpeg /usr/lib/libfdk-aac.so.2 /usr/lib/libfdk-aac.so.2
+
+# get curl
+RUN apk add --update curl
 
 # Add NGINX path, config and static files.
 ENV PATH "${PATH}:/usr/local/nginx/sbin"
